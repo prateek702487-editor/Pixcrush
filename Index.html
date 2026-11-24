@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PixCrush by Prateek Mishra - Free & Fast Image Compressor</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <style>
+    body { background-color: #0b0f19; color: #f8fafc; font-family: system-ui, -apple-system, sans-serif; }
+    .glass { background: rgba(30, 41, 59, 0.65); backdrop-filter: blur(12px); border: 1px solid rgba(148, 163, 184, 0.15); }
+    input[type="range"] { accent-color: #6366f1; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- Navbar -->
+  <header class="border-b border-slate-800 px-4 py-4">
+    <div class="max-w-4xl mx-auto flex items-center justify-between gap-2">
+      <div class="flex items-center gap-2">
+        <div class="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center font-bold text-white">P</div>
+        <div>
+          <span class="text-xl font-bold tracking-tight">Pix<span class="text-indigo-400">Crush</span></span>
+          <p class="text-[11px] text-slate-400 leading-none">by Prateek Mishra</p>
+        </div>
+      </div>
+      <span class="text-xs bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2.5 py-1 rounded-full shrink-0">100% Private • In-Browser</span>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-1 max-w-4xl w-full mx-auto px-4 py-8">
+    <div class="text-center mb-8">
+      <p class="text-xs uppercase tracking-wider text-indigo-400 font-semibold mb-2">Built by Prateek Mishra</p>
+      <h1 class="text-3xl sm:text-4xl font-extrabold mb-2">Compress Images Without Losing Quality</h1>
+      <p class="text-slate-400 text-sm sm:text-base">Fast, free & unlimited JPG, PNG, and WebP compression directly on your phone — a web tool by Prateek Mishra.</p>
+    </div>
+
+    <!-- Ad Banner Top (Replace with AdSense code later) -->
+    <div class="glass rounded-xl p-3 text-center text-xs text-slate-500 mb-6 border-dashed">
+      Ad Space (728x90 / Responsive)
+    </div>
+
+    <!-- Upload Box -->
+    <label id="dropZone" class="glass rounded-2xl p-8 sm:p-12 flex flex-col items-center justify-center text-center cursor-pointer hover:border-indigo-500/60 transition border-2 border-dashed border-slate-700 mb-6">
+      <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp" multiple class="hidden" />
+      <div class="w-14 h-14 rounded-2xl bg-indigo-600/20 text-indigo-400 flex items-center justify-center mb-4 text-2xl">📸</div>
+      <p class="text-lg font-semibold mb-1">Tap to Select Images</p>
+      <p class="text-xs text-slate-400">Supports JPG, PNG, WebP • Multiple files allowed</p>
+    </label>
+
+    <!-- Controls -->
+    <div id="controlsPanel" class="hidden glass rounded-2xl p-5 mb-6 space-y-4">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 items-center">
+        <div>
+          <div class="flex justify-between text-xs mb-1">
+            <span class="text-slate-300">Compression Quality</span>
+            <span id="qualityVal" class="font-bold text-indigo-400">75%</span>
+          </div>
+          <input type="range" id="qualitySlider" min="10" max="100" value="75" class="w-full" />
+        </div>
+
+        <div>
+          <label class="block text-xs text-slate-300 mb-1">Output Format</label>
+          <select id="formatSelect" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm">
+            <option value="auto">Same as Original</option>
+            <option value="image/jpeg">Convert to JPG</option>
+            <option value="image/webp">Convert to WebP (Smallest)</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs text-slate-300 mb-1">Max Width (px)</label>
+          <select id="resizeSelect" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm">
+            <option value="0">Original Size</option>
+            <option value="1920">1920px (Full HD)</option>
+            <option value="1280">1280px (HD)</option>
+            <option value="800">800px (Web/Social)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-slate-800">
+        <span id="summaryText" class="text-xs text-slate-400">0 images ready</span>
+        <div class="flex gap-2">
+          <button id="clearBtn" class="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-medium">Clear All</button>
+          <button id="downloadAllBtn" class="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-xs font-semibold text-white">Download All (ZIP)</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Image List -->
+    <div id="imageList" class="space-y-3"></div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-slate-800 py-6 text-center text-xs text-slate-500">
+    © 2026 PixCrush • Created by Prateek Mishra.
+  </footer>
+
+  <script>
+    const fileInput = document.getElementById('fileInput');
+    const controlsPanel = document.getElementById('controlsPanel');
+    const qualitySlider = document.getElementById('qualitySlider');
+    const qualityVal = document.getElementById('qualityVal');
+    const formatSelect
