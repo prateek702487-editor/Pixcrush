@@ -3,104 +3,472 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PixCrush by Prateek Mishra - Free & Fast Image Compressor</title>
+  <title>PixCrush by Prateek Mishra — Target KB Image Compressor</title>
+  <!-- Load Tailwind CSS for responsive layout and dark slate/indigo styling -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Load JSZip for bundling compressed images into a single ZIP archive -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <!-- Load Inter font for clean typography -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
-    body { background-color: #0b0f19; color: #f8fafc; font-family: system-ui, -apple-system, sans-serif; }
-    .glass { background: rgba(30, 41, 59, 0.65); backdrop-filter: blur(12px); border: 1px solid rgba(148, 163, 184, 0.15); }
-    input[type="range"] { accent-color: #6366f1; }
+    body {
+      background-color: #090d16;
+      color: #f8fafc;
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+    .glass {
+      background: rgba(17, 24, 39, 0.78);
+      border: 1px solid rgba(148, 163, 184, 0.16);
+      backdrop-filter: blur(12px);
+    }
+    input[type="range"] {
+      accent-color: #6366f1;
+    }
   </style>
 </head>
-<body class="min-h-screen flex flex-col">
+<body class="min-h-screen flex flex-col selection:bg-indigo-500/30 selection:text-indigo-200">
 
-  <!-- Navbar -->
-  <header class="border-b border-slate-800 px-4 py-4">
-    <div class="max-w-4xl mx-auto flex items-center justify-between gap-2">
-      <div class="flex items-center gap-2">
-        <div class="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center font-bold text-white">P</div>
-        <div>
-          <span class="text-xl font-bold tracking-tight">Pix<span class="text-indigo-400">Crush</span></span>
-          <p class="text-[11px] text-slate-400 leading-none">by Prateek Mishra</p>
+  <!-- Top Navigation Bar -->
+  <header class="border-b border-slate-800/90 bg-slate-950/80 sticky top-0 z-20 backdrop-blur-md">
+    <div class="max-w-4xl mx-auto px-4 py-3.5 flex items-center justify-between gap-3">
+      <!-- Brand Custom Geometric Logo + Title -->
+      <a href="#" class="flex items-center gap-3 min-w-0">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 via-violet-500 to-emerald-400 p-[1.5px] shadow-lg shadow-indigo-600/20 shrink-0">
+          <div class="w-full h-full rounded-[10.5px] bg-slate-950 flex items-center justify-center">
+            <!-- Custom SVG Geometric Brand Mark (no text initials) -->
+            <svg class="w-5 h-5 text-indigo-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="3" width="13" height="13" rx="3" />
+              <path d="M11 11l9 9" />
+              <path d="M20 14v6h-6" />
+              <circle cx="9.5" cy="9.5" r="1.5" fill="currentColor" stroke="none" />
+            </svg>
+          </div>
         </div>
+        <div class="min-w-0">
+          <div class="flex items-center gap-2">
+            <span class="text-lg sm:text-xl font-extrabold tracking-tight text-white truncate">
+              Pix<span class="text-indigo-400">Crush</span>
+            </span>
+            <span class="hidden sm:inline-block text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full bg-indigo-500/15 text-indigo-300 border border-indigo-500/25">
+              Target KB
+            </span>
+          </div>
+          <p class="text-[11px] text-slate-400 leading-tight truncate">Crafted by Prateek Mishra</p>
+        </div>
+      </a>
+
+      <!-- Creator Avatar Badge + Client-Side Status -->
+      <div class="flex items-center gap-2.5 shrink-0">
+        <div class="flex items-center gap-2 bg-slate-900/90 border border-slate-800 rounded-full pl-1 pr-3 py-1">
+          <img
+            src="creator-photo.jpg"
+            alt="Prateek Mishra"
+            onerror="this.onerror=null;this.src='https://placehold.co/64x64/1e293b/818cf8?text=Creator';"
+            class="w-6 h-6 rounded-full object-cover object-top border border-indigo-400/50 shrink-0"
+          />
+          <span class="text-xs font-medium text-slate-200 truncate">Prateek Mishra</span>
+        </div>
+        <span class="hidden md:inline-flex text-xs bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2.5 py-1 rounded-full font-medium">
+          100% Private
+        </span>
       </div>
-      <span class="text-xs bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2.5 py-1 rounded-full shrink-0">100% Private • In-Browser</span>
     </div>
   </header>
 
-  <!-- Main Content -->
+  <!-- Main Workspace -->
   <main class="flex-1 max-w-4xl w-full mx-auto px-4 py-8">
-    <div class="text-center mb-8">
-      <p class="text-xs uppercase tracking-wider text-indigo-400 font-semibold mb-2">Built by Prateek Mishra</p>
-      <h1 class="text-3xl sm:text-4xl font-extrabold mb-2">Compress Images Without Losing Quality</h1>
-      <p class="text-slate-400 text-sm sm:text-base">Fast, free & unlimited JPG, PNG, and WebP compression directly on your phone — a web tool by Prateek Mishra.</p>
-    </div>
 
-    <!-- Ad Banner Top (Replace with AdSense code later) -->
-    <div class="glass rounded-xl p-3 text-center text-xs text-slate-500 mb-6 border-dashed">
-      Ad Space (728x90 / Responsive)
-    </div>
+    <!-- Hero Section with Creator Badge -->
+    <section class="text-center mb-8">
+      <div class="inline-flex items-center gap-2.5 bg-slate-900/90 border border-slate-800 rounded-2xl px-3.5 py-2 mb-4 shadow-sm">
+        <img
+          src="creator-photo.jpg"
+          alt="Prateek Mishra"
+          onerror="this.onerror=null;this.src='https://placehold.co/80x80/1e293b/818cf8?text=Creator';"
+          class="w-9 h-9 rounded-xl object-cover object-top border border-indigo-400/40 shrink-0"
+        />
+        <div class="text-left">
+          <p class="text-xs font-semibold text-white leading-tight">Prateek Mishra</p>
+          <p class="text-[11px] text-slate-400 leading-tight">Creator • PixCrush Compression Studio</p>
+        </div>
+      </div>
 
-    <!-- Upload Box -->
-    <label id="dropZone" class="glass rounded-2xl p-8 sm:p-12 flex flex-col items-center justify-center text-center cursor-pointer hover:border-indigo-500/60 transition border-2 border-dashed border-slate-700 mb-6">
-      <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp" multiple class="hidden" />
-      <div class="w-14 h-14 rounded-2xl bg-indigo-600/20 text-indigo-400 flex items-center justify-center mb-4 text-2xl">📸</div>
-      <p class="text-lg font-semibold mb-1">Tap to Select Images</p>
-      <p class="text-xs text-slate-400">Supports JPG, PNG, WebP • Multiple files allowed</p>
-    </label>
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight mb-2.5 text-white">
+        Compress Images to Exact <span class="text-indigo-400">KB Size</span>
+      </h1>
+      <p class="text-slate-400 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
+        Dial in a target KB limit for forms & uploads, or adjust quality, format, and max width — processed locally in your browser.
+      </p>
+    </section>
 
-    <!-- Controls -->
-    <div id="controlsPanel" class="hidden glass rounded-2xl p-5 mb-6 space-y-4">
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 items-center">
+    <!-- Upload Dropzone Card -->
+    <section
+      id="dropZone"
+      class="glass rounded-2xl p-6 sm:p-8 text-center border-2 border-dashed border-slate-700/90 hover:border-indigo-500/70 transition-colors mb-6"
+    >
+      <input type="file" id="fileInput" accept="image/*" multiple class="hidden" />
+      <div class="w-12 h-12 rounded-2xl bg-indigo-500/15 border border-indigo-500/30 text-indigo-400 flex items-center justify-center mx-auto mb-3">
+        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+          <polyline points="17 8 12 3 7 8" />
+          <line x1="12" y1="3" x2="12" y2="15" />
+        </svg>
+      </div>
+      <p class="text-base font-semibold text-white mb-1">Select Photos to Compress</p>
+      <p class="text-xs text-slate-400 mb-5">JPG, PNG, WebP • Batch processing & ZIP download supported</p>
+
+      <div class="flex flex-wrap items-center justify-center gap-3">
+        <button
+          type="button"
+          id="pickBtn"
+          class="px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 active:scale-[0.99] transition text-sm font-semibold text-white shadow-lg shadow-indigo-600/25 cursor-pointer"
+        >
+          Choose Images
+        </button>
+        <button
+          type="button"
+          id="demoBtn"
+          class="px-4 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 active:scale-[0.99] transition text-xs font-medium text-slate-200 border border-slate-700 cursor-pointer"
+        >
+          Try Sample Photo
+        </button>
+      </div>
+
+      <!-- Inline Status / Error Banner (never uses alert/confirm) -->
+      <p id="statusMsg" role="status" class="text-xs text-amber-400 mt-3 min-h-[18px]"></p>
+    </section>
+
+    <!-- Compression Controls Panel -->
+    <section id="controlsPanel" class="hidden glass rounded-2xl p-5 sm:p-6 mb-6 space-y-5">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-end">
+
+        <!-- Target Size in KB -->
         <div>
-          <div class="flex justify-between text-xs mb-1">
-            <span class="text-slate-300">Compression Quality</span>
+          <label for="targetKbInput" class="block text-xs font-medium text-slate-300 mb-1.5">
+            Target Size (KB) <span class="text-slate-500">(Optional)</span>
+          </label>
+          <input
+            type="number"
+            id="targetKbInput"
+            min="5"
+            max="25000"
+            placeholder="e.g. 150"
+            class="w-full bg-slate-950/80 border border-slate-700 focus:border-indigo-500 focus:outline-none rounded-xl px-3.5 py-2.5 text-sm text-white placeholder-slate-500"
+          />
+        </div>
+
+        <!-- Quality Slider -->
+        <div>
+          <div class="flex justify-between text-xs mb-1.5">
+            <label for="qualitySlider" class="font-medium text-slate-300">Quality (Fallback)</label>
             <span id="qualityVal" class="font-bold text-indigo-400">75%</span>
           </div>
-          <input type="range" id="qualitySlider" min="10" max="100" value="75" class="w-full" />
+          <div class="py-2">
+            <input
+              type="range"
+              id="qualitySlider"
+              min="10"
+              max="100"
+              value="75"
+              class="w-full cursor-pointer"
+            />
+          </div>
         </div>
 
+        <!-- Output Format -->
         <div>
-          <label class="block text-xs text-slate-300 mb-1">Output Format</label>
-          <select id="formatSelect" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm">
-            <option value="auto">Same as Original</option>
-            <option value="image/jpeg">Convert to JPG</option>
-            <option value="image/webp">Convert to WebP (Smallest)</option>
+          <label for="formatSelect" class="block text-xs font-medium text-slate-300 mb-1.5">Output Format</label>
+          <select
+            id="formatSelect"
+            class="w-full bg-slate-950/80 border border-slate-700 focus:border-indigo-500 focus:outline-none rounded-xl px-3.5 py-2.5 text-sm text-slate-100"
+          >
+            <option value="image/jpeg">JPG (Best Compatibility)</option>
+            <option value="image/webp">WebP (Smaller Size)</option>
           </select>
         </div>
 
+        <!-- Max Width Resize -->
         <div>
-          <label class="block text-xs text-slate-300 mb-1">Max Width (px)</label>
-          <select id="resizeSelect" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm">
-            <option value="0">Original Size</option>
+          <label for="resizeSelect" class="block text-xs font-medium text-slate-300 mb-1.5">Max Width (px)</label>
+          <select
+            id="resizeSelect"
+            class="w-full bg-slate-950/80 border border-slate-700 focus:border-indigo-500 focus:outline-none rounded-xl px-3.5 py-2.5 text-sm text-slate-100"
+          >
+            <option value="0">Auto / Original</option>
             <option value="1920">1920px (Full HD)</option>
             <option value="1280">1280px (HD)</option>
-            <option value="800">800px (Web/Social)</option>
+            <option value="800">800px (Web / Form)</option>
           </select>
         </div>
       </div>
 
-      <div class="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-slate-800">
-        <span id="summaryText" class="text-xs text-slate-400">0 images ready</span>
-        <div class="flex gap-2">
-          <button id="clearBtn" class="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-medium">Clear All</button>
-          <button id="downloadAllBtn" class="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-xs font-semibold text-white">Download All (ZIP)</button>
+      <!-- Quick Target KB Presets -->
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="text-xs text-slate-400 mr-1">Quick Targets:</span>
+        <button type="button" data-kb="50" class="preset-btn px-3 py-1.5 rounded-lg bg-slate-800/90 hover:bg-indigo-600/30 border border-slate-700 hover:border-indigo-500/40 text-xs text-slate-200 transition cursor-pointer">50 KB</button>
+        <button type="button" data-kb="100" class="preset-btn px-3 py-1.5 rounded-lg bg-slate-800/90 hover:bg-indigo-600/30 border border-slate-700 hover:border-indigo-500/40 text-xs text-slate-200 transition cursor-pointer">100 KB</button>
+        <button type="button" data-kb="200" class="preset-btn px-3 py-1.5 rounded-lg bg-slate-800/90 hover:bg-indigo-600/30 border border-slate-700 hover:border-indigo-500/40 text-xs text-slate-200 transition cursor-pointer">200 KB</button>
+        <button type="button" data-kb="" class="preset-btn px-3 py-1.5 rounded-lg bg-slate-800/60 hover:bg-slate-700 border border-slate-700 text-xs text-slate-400 transition cursor-pointer">Reset KB</button>
+      </div>
+
+      <p class="text-xs text-slate-400 leading-relaxed">
+        When <span class="text-slate-200 font-medium">Target Size (KB)</span> is set, binary search tunes quality and scales dimensions gently when needed to stay under your target. Leave it blank to compress strictly by the quality slider.
+      </p>
+
+      <!-- Batch Actions Bar -->
+      <div class="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-slate-800">
+        <span id="summaryText" class="text-xs font-medium text-slate-400">0 images ready</span>
+        <div class="flex items-center gap-2.5">
+          <button
+            type="button"
+            id="clearBtn"
+            class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-medium text-slate-200 transition cursor-pointer"
+          >
+            Clear All
+          </button>
+          <button
+            type="button"
+            id="downloadAllBtn"
+            class="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-xs font-semibold text-white transition shadow-md shadow-indigo-600/20 cursor-pointer"
+          >
+            Download All (ZIP)
+          </button>
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- Image List -->
-    <div id="imageList" class="space-y-3"></div>
+    <!-- Processed Images List -->
+    <section id="imageList" class="space-y-3"></section>
   </main>
 
   <!-- Footer -->
-  <footer class="border-t border-slate-800 py-6 text-center text-xs text-slate-500">
-    © 2026 PixCrush • Created by Prateek Mishra.
+  <footer class="border-t border-slate-800/90 py-6 px-4 text-center text-xs text-slate-500">
+    <div class="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-2">
+      <span>© 2026 PixCrush • Created by Prateek Mishra.</span>
+      <span class="hidden sm:inline">•</span>
+      <span>Client-side compression in your browser.</span>
+    </div>
   </footer>
 
   <script>
+    // DOM Element References
+    const pickBtn = document.getElementById('pickBtn');
+    const demoBtn = document.getElementById('demoBtn');
+    const dropZone = document.getElementById('dropZone');
     const fileInput = document.getElementById('fileInput');
+    const targetKbInput = document.getElementById('targetKbInput');
+    const statusMsg = document.getElementById('statusMsg');
     const controlsPanel = document.getElementById('controlsPanel');
     const qualitySlider = document.getElementById('qualitySlider');
     const qualityVal = document.getElementById('qualityVal');
-    const formatSelect
+    const formatSelect = document.getElementById('formatSelect');
+    const resizeSelect = document.getElementById('resizeSelect');
+    const imageList = document.getElementById('imageList');
+    const summaryText = document.getElementById('summaryText');
+    const clearBtn = document.getElementById('clearBtn');
+    const downloadAllBtn = document.getElementById('downloadAllBtn');
+    const presetBtns = document.querySelectorAll('.preset-btn');
+
+    // Stores processed entries { file, newName, compressedBlob, compressedUrl }
+    let filesData = [];
+    let isReprocessing = false;
+
+    /**
+     * Converts raw byte counts into readable strings (B, KB, MB).
+     */
+    const formatBytes = (bytes) => {
+      if (!bytes || bytes <= 0) return '0 B';
+      const k = 1024;
+      const sizes = ['B', 'KB', 'MB'];
+      const i = Math.min(sizes.length - 1, Math.floor(Math.log(bytes) / Math.log(k)));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+    };
+
+    /**
+     * Revokes existing object URLs to free memory cleanly.
+     */
+    function revokeExistingUrls() {
+      filesData.forEach((entry) => {
+        if (entry.compressedUrl) {
+          try {
+            URL.revokeObjectURL(entry.compressedUrl);
+          } catch (_) {
+            // Ignore already revoked URLs
+          }
+        }
+      });
+    }
+
+    // Open native file picker when clicking Choose Images
+    pickBtn.addEventListener('click', () => {
+      statusMsg.textContent = '';
+      fileInput.click();
+    });
+
+    // Generate a sample high-detail image locally so users can test Target KB inside preview sandboxes
+    demoBtn.addEventListener('click', async () => {
+      try {
+        statusMsg.textContent = 'Generating sample photo...';
+        const sampleCanvas = document.createElement('canvas');
+        sampleCanvas.width = 1600;
+        sampleCanvas.height = 1000;
+        const ctx = sampleCanvas.getContext('2d');
+        if (!ctx) throw new Error('Canvas context unavailable');
+
+        const gradient = ctx.createLinearGradient(0, 0, 1600, 1000);
+        gradient.addColorStop(0, '#4f46e5');
+        gradient.addColorStop(0.55, '#3730a3');
+        gradient.addColorStop(1, '#090d16');
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, 1600, 1000);
+
+        for (let i = 0; i < 48; i++) {
+          ctx.beginPath();
+          ctx.arc((i * 197) % 1600, (i * 293) % 1000, 35 + (i % 85), 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(129, 140, 248, ${0.07 + (i % 4) * 0.03})`;
+          ctx.fill();
+        }
+
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 60px sans-serif';
+        ctx.fillText('PixCrush Sample Image', 110, 460);
+        ctx.font = '30px sans-serif';
+        ctx.fillStyle = '#c7d2fe';
+        ctx.fillText('Created by Prateek Mishra • Test Target KB Compression', 110, 520);
+
+        const pngBlob = await canvasToBlobAsync(sampleCanvas, 'image/png', 1);
+        if (!pngBlob) throw new Error('Sample blob generation failed');
+
+        const sampleFile = new File([pngBlob], 'pixcrush-sample.png', { type: 'image/png' });
+        await handleIncomingFiles([sampleFile]);
+      } catch (err) {
+        statusMsg.textContent = 'Could not generate sample photo: ' + (err.message || 'Unknown error');
+      }
+    });
+
+    // Drag and drop handlers
+    dropZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropZone.classList.add('border-indigo-500');
+    });
+
+    dropZone.addEventListener('dragleave', () => {
+      dropZone.classList.remove('border-indigo-500');
+    });
+
+    dropZone.addEventListener('drop', async (e) => {
+      e.preventDefault();
+      dropZone.classList.remove('border-indigo-500');
+      const droppedFiles = Array.from(e.dataTransfer?.files || []).filter((f) =>
+        f.type && f.type.startsWith('image/')
+      );
+      if (droppedFiles.length) {
+        await handleIncomingFiles(droppedFiles);
+      } else {
+        statusMsg.textContent = 'Please drop valid image files (JPG, PNG, WebP).';
+      }
+    });
+
+    // File input change handler
+    fileInput.addEventListener('change', async (e) => {
+      const selected = Array.from(e.target.files || []);
+      await handleIncomingFiles(selected);
+      fileInput.value = '';
+    });
+
+    /**
+     * Processes selected image files and appends results to the list.
+     */
+    async function handleIncomingFiles(selected) {
+      if (!selected.length) {
+        statusMsg.textContent = 'No image selected.';
+        return;
+      }
+
+      statusMsg.textContent = `Processing ${selected.length} image(s)...`;
+      controlsPanel.classList.remove('hidden');
+
+      let successCount = 0;
+      for (const file of selected) {
+        try {
+          const processed = await processSingleFile(file);
+          filesData.push(processed);
+          successCount += 1;
+        } catch (err) {
+          statusMsg.textContent = `Could not process "${file.name || 'image'}": ${err.message || 'Unsupported image'}`;
+        }
+      }
+
+      renderList();
+      if (successCount > 0) {
+        statusMsg.textContent = '';
+      }
+    }
+
+    /**
+     * Re-runs compression across already loaded images when settings change.
+     */
+    async function reprocessExisting() {
+      qualityVal.textContent = `${qualitySlider.value}%`;
+      if (!filesData.length || isReprocessing) return;
+
+      isReprocessing = true;
+      try {
+        const rawFiles = filesData.map((entry) => entry.file);
+        revokeExistingUrls();
+        filesData = [];
+
+        for (const file of rawFiles) {
+          try {
+            const updated = await processSingleFile(file);
+            filesData.push(updated);
+          } catch (_) {
+            // Skip failed re-compression for an individual item
+          }
+        }
+        renderList();
+      } finally {
+        isReprocessing = false;
+      }
+    }
+
+    // Bind live updates across controls
+    [qualitySlider, formatSelect, resizeSelect, targetKbInput].forEach((el) => {
+      el.addEventListener('input', reprocessExisting);
+    });
+
+    // Quick KB target presets
+    presetBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        targetKbInput.value = btn.getAttribute('data-kb') || '';
+        reprocessExisting();
+      });
+    });
+
+    // Clear all loaded images
+    clearBtn.addEventListener('click', () => {
+      revokeExistingUrls();
+      filesData = [];
+      imageList.innerHTML = '';
+      statusMsg.textContent = '';
+      controlsPanel.classList.add('hidden');
+    });
+
+    /**
+     * Reads a File into a Data URL string.
+     */
+    function readFileAsDataUrl(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = () => reject(new Error('Failed to read file'));
+        reader.readAsDataURL(file);
+      });
+    }
+
+    /**
+     * Wraps canvas.toBlob into a Promise.
+     */
+    function canvasToBlobAsync(canvas, type, quality) {
+      return new Promise((resolve) => {
+        try {
